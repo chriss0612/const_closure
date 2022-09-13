@@ -39,7 +39,7 @@ const FROM_CLOSURE: i32 = {
 };
 assert_eq!(FROM_CLOSURE, 3)
 ```
-!*/
+*/
 
 /// # Macro for creating const callable "closures"
 ///
