@@ -1,8 +1,17 @@
 [package]
-name = "const_closure"
-version = "0.1.0"
+name = "const_sort_rs"
+version = "0.0.1"
 edition = "2021"
-
+license = "MIT OR Apache-2.0"
+authors = [
+    "onestacked <chrisi.schrefl@gmail.com>",
+    "raldone01 <raldone01@gmail.com>",
+]
+description = "Macro to create const callable closures"
+homepage = "https://github.com/chriss0612/const_closure"
+repository = "https://github.com/chriss0612/const_closure"
+categories = ["no-std", "rust-patterns"]
+keywords = ["const", "closures", "nightly"]
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
