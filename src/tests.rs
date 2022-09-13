@@ -1,7 +1,7 @@
 use super::*;
 
 #[test]
-fn once_clusure() {
+fn once_closure() {
   let x = 5;
   let add1 = const_closure!(FnOnce this [x: i32] () {
     this.x += 1;
@@ -23,7 +23,7 @@ fn once_clusure() {
   assert_eq!(x, 5);
 }
 #[test]
-fn mut_clusure() {
+fn mut_closure() {
   let mut x = 5;
 
   let mut add1 = const_closure!(FnMut this [x: i32] () -> () {
@@ -42,7 +42,7 @@ fn mut_clusure() {
   assert_eq!(x, 11);
 }
 #[test]
-fn fn_clusure() {
+fn fn_closure() {
   let mut x = 5;
 
   let add1 = const_closure!(this [x: i32] () -> i32 {
