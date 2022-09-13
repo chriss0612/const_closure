@@ -110,13 +110,16 @@ macro_rules! const_closure {
     const_closure!($type for<$($gen_name $(: $($trait_bound)*)?),*> [$($cap_name : $cap_ty ),*] ($($arg_name: $arg_ty),*) -> () {$($body)*})
   }};
   // Actual Implementation
-  (FnOnce for<$($gen_name:ident $(: $($trait_bound:path)*)?),*> [$($cap_name:ident : $cap_ty:ty ),+ $(,)?] ($($arg_name:ident: $arg_ty:ty),*) -> $ret_ty:ty {$($body:tt)*}) => {{
+  (FnOnce for<$($gen_lt:lifetime,)* $($gen_name:ident $(:$($trait_bound:path)*)?),*>
+  [$($cap_name:ident : $cap_ty:ty),* $(,)?]
+  ($($arg_name:ident: $arg_ty:ty),*) -> $ret_ty:ty
+  {$($body:tt)*}) => {{
     #[allow(non_snake_case)]
-    struct Cl<$($gen_name $(: $($trait_bound)*)?),*>{
-      $($gen_name: ::core::marker::PhantomData<*const $gen_name>,)*
+    struct Cl<$($gen_lt,)* $($gen_name $(: $($trait_bound)*)?),*>{
+      _lt: ::core::marker::PhantomData<($(&$gen_lt (),)* $(*const $gen_name,)*)>,
       $($cap_name: $cap_ty),*
     }
-    impl<$($gen_name $(: $(~const $trait_bound + )+ ~const ::core::marker::Destruct)?),*> const FnOnce<($($arg_ty,)*)> for Cl<$($gen_name),*>
+    impl<$($gen_lt,)* $($gen_name $(: $(~const $trait_bound + ) + ~const ::core::marker::Destruct)?),*> const FnOnce<($($arg_ty,)*)> for Cl<$($gen_name),*>
       where Self: ~const ::core::marker::Destruct {
       type Output = $ret_ty;
 
@@ -131,18 +134,20 @@ macro_rules! const_closure {
       }
     }
     Cl {
-      $($gen_name: ::core::marker::PhantomData,)*
+      _lt: ::core::marker::PhantomData,
       $($cap_name),*
     }
   }};
-  (FnMut for<$($gen_name:ident $(: $($trait_bound:path)*)?),*> [$($cap_name:ident : $cap_ty:ty),* $(,)?] ($($arg_name:ident: $arg_ty:ty),*) -> $ret_ty:ty {$($body:tt)*}) => {{
+  (FnMut for<$($gen_lt:lifetime,)* $($gen_name:ident $(:$($trait_bound:path)*)?),*>
+    [$($cap_name:ident : $cap_ty:ty),* $(,)?]
+    ($($arg_name:ident: $arg_ty:ty),*) -> $ret_ty:ty
+    {$($body:tt)*}) => {{
     #[allow(non_snake_case)]
     struct Cl<'a, $($gen_name $(: $($trait_bound)*)?),*> {
-      _lt: ::core::marker::PhantomData<&'a mut u8>,
-      $($gen_name: ::core::marker::PhantomData<*const $gen_name>,)*
+      _lt: ::core::marker::PhantomData<(&'a mut u8, $(&$gen_lt (),)* $(*const $gen_name),*)>,
       $($cap_name: Option<&'a mut $cap_ty>,)*
     }
-    impl<'a, $($gen_name $(: $(~const $trait_bound + )+ ~const ::core::marker::Destruct)?),*> const FnOnce<($($arg_ty,)*)> for Cl<'a, $($gen_name),*> {
+    impl<'a, $($gen_lt,)* $($gen_name $(: $(~const $trait_bound + )* ~const ::core::marker::Destruct)?),*> const FnOnce<($($arg_ty,)*)> for Cl<'a, $($gen_name),*> {
       type Output = $ret_ty;
 
       #[allow(unused_parens)]
@@ -151,7 +156,7 @@ macro_rules! const_closure {
       }
     }
 
-    impl<'a, $($gen_name $(: $(~const $trait_bound + )+ ~const ::core::marker::Destruct)?),*> const FnMut<($($arg_ty,)*)> for Cl<'a, $($gen_name),*> {
+    impl<'a, $($gen_lt,)* $($gen_name $(: $(~const $trait_bound + )* ~const ::core::marker::Destruct)?),*> const FnMut<($($arg_ty,)*)> for Cl<'a, $($gen_name),*> {
 
       #[allow(unused_parens)]
       extern "rust-call" fn call_mut(&mut self, ($($arg_name,)*): ($($arg_ty,)*)) -> Self::Output {
@@ -164,30 +169,32 @@ macro_rules! const_closure {
     }
     Cl {
       _lt: ::core::marker::PhantomData,
-      $($gen_name: ::core::marker::PhantomData,)*
       $($cap_name: Some(&mut $cap_name),)*
     }
   }};
-  (Fn for<$($gen_name:ident $(: $($trait_bound:path)*)?),*> [$($cap_name:ident : $cap_ty:ty ),* $(,)?] ($($arg_name:ident: $arg_ty:ty),*) -> $ret_ty:ty {$($body:tt)*}) => {{
+  (Fn for<$($gen_lt:lifetime,)* $($gen_name:ident $(:$($trait_bound:path)*)?),*>
+  [$($cap_name:ident : $cap_ty:ty),* $(,)?]
+  ($($arg_name:ident: $arg_ty:ty),*) -> $ret_ty:ty
+  {$($body:tt)*}) => {{
     #[allow(non_snake_case)]
     struct Cl<'a, $($gen_name $(: $($trait_bound)*)?),*> {
-      _lt: ::core::marker::PhantomData<&'a u8>,
+      _lt: ::core::marker::PhantomData<(&'a mut u8, $(&mut $gen_lt (),)* $(*const $gen_name),*)>,
       $($gen_name: ::core::marker::PhantomData<*const $gen_name>,)*
       $($cap_name: &'a $cap_ty,)*
     }
-    impl<'a, $($gen_name $(: $(~const $trait_bound + )+ ~const ::core::marker::Destruct)?),*> const FnOnce<($($arg_ty,)*)> for Cl<'a, $($gen_name),*> {
+    impl<'a, $($gen_lt,)* $($gen_name $(: $(~const $trait_bound + )+ ~const ::core::marker::Destruct)?),*> const FnOnce<($($arg_ty,)*)> for Cl<'a, $($gen_name),*> {
       type Output = $ret_ty;
 
       extern "rust-call" fn call_once(mut self, args: ($($arg_ty,)*)) -> Self::Output {
         self.call_mut(args)
       }
     }
-    impl<'a, $($gen_name $(: $(~const $trait_bound + )+ ~const ::core::marker::Destruct)?),*> const FnMut<($($arg_ty,)*)> for Cl<'a, $($gen_name),*> {
+    impl<'a, $($gen_lt,)* $($gen_name $(: $(~const $trait_bound + )+ ~const ::core::marker::Destruct)?),*> const FnMut<($($arg_ty,)*)> for Cl<'a, $($gen_name),*> {
       extern "rust-call" fn call_mut(&mut self, args: ($($arg_ty,)*)) -> Self::Output {
         self.call(args)
       }
     }
-    impl<'a, $($gen_name $(: $(~const $trait_bound + )+ ~const ::core::marker::Destruct)?),*> const Fn<($($arg_ty,)*)> for Cl<'a, $($gen_name),*> {
+    impl<'a, $($gen_lt,)* $($gen_name $(: $(~const $trait_bound + )+ ~const ::core::marker::Destruct)?),*> const Fn<($($arg_ty,)*)> for Cl<'a, $($gen_name),*> {
 
       #[allow(unused_parens)]
       extern "rust-call" fn call(&self, ($($arg_name,)*): ($($arg_ty,)*)) -> Self::Output {
@@ -200,7 +207,6 @@ macro_rules! const_closure {
     }
     Cl {
       _lt: ::core::marker::PhantomData,
-      $($gen_name: ::core::marker::PhantomData,)*
       $($cap_name: &$cap_name,)*
     }
   }};
