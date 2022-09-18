@@ -1,6 +1,6 @@
 use core::marker::{Destruct, PhantomData};
 
-/// Struct representing a Closure with owned data.
+/// Struct representing a closure with owned data.
 ///
 /// Example:
 /// ```rust
@@ -23,9 +23,9 @@ impl<CapturedData, ClosureArguments, Function>
 {
   /// Function for creating a new closure.
   ///
-  /// data is the owned data that is captured from the environment (this data must be ~const Destruct).
+  /// `data` is the owned data that is captured from the environment (this data must be `~const Destruct`).
   ///
-  /// func is the function of the closure, it gets the data and a tuple of the arguments closure
+  /// `func` is the function of the closure, it gets the data and a tuple of the arguments closure
   ///   and return the return value of the closure.
   pub const fn new<ClosureReturnValue>(data: CapturedData, func: Function) -> Self
   where
@@ -52,7 +52,7 @@ where
   }
 }
 
-/// Struct representing a Closure with mutably borrowed data.
+/// Struct representing a closure with mutably borrowed data.
 ///
 /// Example:
 /// ```rust
@@ -78,9 +78,9 @@ impl<'a, CapturedData: ?Sized, ClosureArguments, Function>
 {
   /// Function for creating a new closure.
   ///
-  /// data is the a mutable borrow of data that is captured from the environment.
+  /// `data` is the a mutable borrow of data that is captured from the environment.
   ///
-  /// func is the function of the closure, it gets the data and a tuple of the arguments closure
+  /// `func` is the function of the closure, it gets the data and a tuple of the arguments closure
   ///   and return the return value of the closure.
   pub const fn new<ClosureReturnValue>(data: &'a mut CapturedData, func: Function) -> Self
   where
@@ -115,7 +115,7 @@ where
   }
 }
 
-/// Struct representing a Closure with borrowed data.
+/// Struct representing a closure with borrowed data.
 ///
 /// Example:
 /// ```rust
@@ -140,9 +140,9 @@ impl<'a, CapturedData: ?Sized, ClosureArguments, Function>
 {
   /// Function for creating a new closure.
   ///
-  /// data is the a mutable borrow of data that is captured from the environment.
+  /// `data` is the a mutable borrow of data that is captured from the environment.
   ///
-  /// func is the function of the closure, it gets the data and a tuple of the arguments closure
+  /// `func` is the function of the closure, it gets the data and a tuple of the arguments closure
   ///   and return the return value of the closure.
   pub const fn new<ClosureReturnValue>(data: &'a CapturedData, func: Function) -> Self
   where
