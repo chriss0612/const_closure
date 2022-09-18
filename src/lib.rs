@@ -9,20 +9,20 @@
 #![feature(const_refs_to_cell)]
 /*!
 # Const Closure
-This crate allows to create types for representing closures in const contexts.
+This crate allows you to create types for representing closures in const contexts.
 
-To do this simply create a instance of one of the Const{Fn, FnMut, FnOnce}Closure
-with the associated new function.
+To do this simply create an instance of one of the `Const{Fn, FnMut, FnOnce}Closure`
+with the associated `new` function.
 
-This new function gets a the data to be captured (owned for FnOnce, &mut for FnMut and & for Fn)
+This new function gets a the data to be captured (owned for `FnOnce`, `&mut` for `FnMut` and `&` for `Fn`)
 and the the function to execute.
 
-This function must be a const fn that gets the captured state (owned for FnOnce, &mut for FnMut and & for Fn)
+This function must be a `const fn` that gets the captured state (owned for `FnOnce`, `&mut` for `FnMut` and `&` for `Fn`)
 and a tuple representing the arguments of the closure.
 
-The Closure returns the return value of that function.
+The closure returns the return value of that function.
 
-If you were looking for the const_closure macro, this was removed in favor of the new generic based approach
+If you were looking for the `const_closure` macro, this was removed in favour of the new generic based approach
   as this is a lot cleaner and also more versatile.
 
 ## Example
