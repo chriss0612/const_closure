@@ -1,90 +1,37 @@
-use core::ops::Add;
-
-use super::*;
+use crate::closure_type::{ConstFnClosure, ConstFnMutClosure, ConstFnOnceClosure};
 
 #[test]
-fn once_closure() {
-  let x = 5;
-  //let add1 = const_closure!(FnOnce [x: i32] () {
-  //  x += 1;
-  //  assert!(x == 6);
-  //  ()
-  //});
-  //
-  //add1();
-
-  assert_eq!(x, 5);
-
-  //let add = const_closure!(FnOnce [x: i32] (val1: i32) {
-  //  x += val1;
-  //  assert!(x == 10);
-  //  ()
-  //});
-  //add(5);
-  assert_eq!(x, 5);
-}
-#[test]
-fn mut_closure() {
-  let mut x = 5;
-
-  let mut add1 = const_closure!(FnMut [x: i32] () -> () {
-    *x += 1
-  });
-
-  add1();
-
-  assert_eq!(x, 6);
-
-  let mut add = const_closure!(FnMut [x: i32] (val1: i32) -> () {
-    *x += val1
-  });
-
-  add(5);
-  assert_eq!(x, 11);
-}
-#[test]
-fn fn_closure() {
-  let x = 5;
-
-  let add1 = const_closure!([x: i32] () -> i32 {
-    *x + 1
-  });
-
-  assert_eq!(add1(), 6);
-  assert!(x == 5);
-
-  let add = const_closure!([x: i32] (val1: i32) -> i32 {
-    *x + val1
-  });
-
-  assert_eq!(add(5), 10);
-  assert!(x == 5);
-  //let lt = const_closure!(for<T: PartialOrd> (val1: T, val2: T) -> bool {
-  //  val1 < val2
-  //});
-  //assert_eq!(lt(5, 3), false)
-}
-#[test]
-fn test_add() {
-  const fn add<T, G: Add<T, Output = G>>(l: G, r: T) -> G {
-    let cl = const_closure!(
-        FnOnce for<T, G: Add<T, Output = G>> [l: G, r: T]
-        () -> G {
-      l + r
-    });
-    cl()
+const fn test_fn_once_closure_struct() {
+  const fn imp(state: i32, (arg,): (i32,)) -> i32 {
+    state + arg
   }
-  assert_eq!(add(1, 5), 6);
-}
-#[test]
-const fn test_cl_cl() {
-  let mut cl = const_closure!(Fn for<> [](a:&i32, b:&i32) -> bool {*a < *b});
+  let i = 5;
+  let cl = ConstFnOnceClosure::new(i, imp);
 
-  let mut cl2 = const_closure!(FnMut for<T, F: FnMut(&T, &T) -> bool> [cl: F] (a: &T, b: &T) -> bool {
-     !cl(a,b)
-  });
-  let a = 3;
-  let b = 1;
-  assert!(cl2(&a, &b))
+  assert!(7 == cl(2));
 }
-//
+
+#[test]
+const fn test_fn_mut_closure_struct() {
+  const fn imp(state: &mut i32, (arg,): (i32,)) -> i32 {
+    *state += arg;
+    *state
+  }
+  let mut i = 5;
+  let mut cl = ConstFnMutClosure::new(&mut i, imp);
+
+  assert!(7 == cl(2));
+  assert!(8 == cl(1));
+}
+
+#[test]
+const fn test_fn_closure_struct() {
+  const fn imp(state: &i32, (arg,): (i32,)) -> i32 {
+    *state + arg
+  }
+  let i = 5;
+  let cl = ConstFnClosure::new(&i, imp);
+
+  assert!(7 == cl(2));
+  assert!(6 == cl(1));
+}

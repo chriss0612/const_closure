@@ -7,37 +7,36 @@
 
 <!-- The rest of this section comes straight from the crate docs from the source. -->
 
-This crate allows using macros to automatically create closure like types/values.
+This crate allows to create types for representing closures in const contexts.
 
-This works by implementing the Fn* traits for a struct containing all the values captured form the environment.
+To do this simply create a instance of one of the Const{Fn, FnMut, FnOnce}Closure
+with the associated new function.
 
-Because of restrictions of declarative macros the used syntax is less than ideal, but it is a lot better than manual implementations of the Fn* traits.
+This new function gets a the data to be captured (owned for FnOnce, &mut for FnMut and & for Fn)
+and the the function to execute.
 
-For details of the Syntax see: `const_closure`.
+This function must be a const fn that gets the captured state (owned for FnOnce, &mut for FnMut and & for Fn)
+and a tuple representing the arguments of the closure.
 
-## Requirements
+The Closure returns the return value of that function.
 
-This crate requires a nightly compiler.
+If you were looking for the const_closure macro, this was removed in version 2.0 in favor of the new generic based approach
+  as this is a lot cleaner and also more versatile.
 
 ## Example
 ```rust
-#![feature(unboxed_closures)]
-#![feature(fn_traits)]
-#![feature(const_trait_impl)]
 #![feature(const_mut_refs)]
-#![feature(const_refs_to_cell)]
-#![feature(const_ops)]
-use const_closure::const_closure;
+use const_closure::ConstFnMutClosure;
+const fn imp(state: &mut i32, (arg,): (i32,)) -> i32 {
+  *state += arg;
+  *state
+}
+let mut i = 5;
+let mut cl = ConstFnMutClosure::new(&mut i, imp);
 
-const FROM_CLOSURE: i32 = {
-  let base = 5;
-  let calc = const_closure!([base: i32] (offset: i32) -> i32 {
-    base + offset
-  });
-  calc(-2)
-};
-assert_eq!(FROM_CLOSURE, 3)
-```
+assert!(7 == cl(2));
+assert!(8 == cl(1));
+*/
 
 Authors
 -------
@@ -49,8 +48,8 @@ License
 
 This project is released under either:
 
-- [MIT License](https://github.com/raldone01/trait_cast_rs/blob/main/LICENSE-MIT)
-- [Apache License (Version 2.0)](https://github.com/raldone01/trait_cast_rs/blob/main/LICENSE-APACHE)
+- [MIT License](https://github.com/chriss0612/const_closure/blob/master/LICENSE-MIT)
+- [Apache License (Version 2.0)](https://github.com/chriss0612/const_closure/blob/master/LICENSE-APACHE)
 
 at your choosing.
 
