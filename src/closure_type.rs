@@ -1,6 +1,18 @@
 use core::marker::{Destruct, PhantomData};
 
 /// Struct representing a Closure with owned data.
+///
+/// Example:
+/// ```rust
+/// use const_closure::ConstFnOnceClosure;
+/// const fn imp(state: i32, (arg,): (i32,)) -> i32 {
+///     state + arg
+/// }
+/// let i = 5;
+/// let cl = ConstFnOnceClosure::new(i, imp);
+///
+/// assert!(7 == cl(2));
+/// ```
 pub struct ConstFnOnceClosure<CapturedData, ClosureArguments, Function> {
   data: CapturedData,
   func: Function,
@@ -41,6 +53,21 @@ where
 }
 
 /// Struct representing a Closure with mutably borrowed data.
+///
+/// Example:
+/// ```rust
+/// #![feature(const_mut_refs)]
+/// use const_closure::ConstFnMutClosure;
+/// const fn imp(state: &mut i32, (arg,): (i32,)) -> i32 {
+///   *state += arg;
+///   *state
+/// }
+/// let mut i = 5;
+/// let mut cl = ConstFnMutClosure::new(&mut i, imp);
+///
+/// assert!(7 == cl(2));
+/// assert!(8 == cl(1));
+/// ```
 pub struct ConstFnMutClosure<'a, CapturedData: ?Sized, ClosureArguments, Function> {
   data: &'a mut CapturedData,
   func: Function,
@@ -55,23 +82,6 @@ impl<'a, CapturedData: ?Sized, ClosureArguments, Function>
   ///
   /// func is the function of the closure, it gets the data and a tuple of the arguments closure
   ///   and return the return value of the closure.
-  ///
-  ///
-  ///
-  /// Example:
-  /// ```rust
-  /// #![feature(const_mut_refs)]
-  /// use const_closure::ConstFnMutClosure;
-  /// const fn imp(state: &mut i32, (arg,): (i32,)) -> i32 {
-  ///   *state += arg;
-  ///   *state
-  /// }
-  /// let mut i = 5;
-  /// let mut cl = ConstFnMutClosure::new(&mut i, imp);
-  ///
-  /// assert!(7 == cl(2));
-  /// assert!(8 == cl(1));
-  /// ```
   pub const fn new<ClosureReturnValue>(data: &'a mut CapturedData, func: Function) -> Self
   where
     Function:
@@ -106,6 +116,20 @@ where
 }
 
 /// Struct representing a Closure with borrowed data.
+///
+/// Example:
+/// ```rust
+/// use const_closure::ConstFnClosure;
+///
+/// const fn imp(state: &i32, (arg,): (i32,)) -> i32 {
+///     *state + arg
+/// }
+/// let i = 5;
+/// let cl = ConstFnClosure::new(&i, imp);
+///
+/// assert!(7 == cl(2));
+/// assert!(6 == cl(1));
+/// ```
 pub struct ConstFnClosure<'a, CapturedData: ?Sized, ClosureArguments, Function> {
   data: &'a CapturedData,
   func: Function,

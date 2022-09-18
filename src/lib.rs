@@ -43,5 +43,3 @@ assert!(8 == cl(1));
 
 mod closure_type;
 pub use closure_type::{ConstFnClosure, ConstFnMutClosure, ConstFnOnceClosure};
-#[cfg(test)]
-mod tests;
