@@ -1,5 +1,7 @@
 #![no_std]
 #![warn(clippy::pedantic, clippy::nursery)]
+#![deny(rust_2018_idioms)]
+#![deny(elided_lifetimes_in_paths)]
 #![deny(missing_docs)]
 #![deny(unsafe_code)]
 #![feature(unboxed_closures)]
@@ -43,3 +45,6 @@ assert!(8 == cl(1));
 
 mod closure_type;
 pub use closure_type::{ConstFnClosure, ConstFnMutClosure, ConstFnOnceClosure};
+
+#[cfg(test)]
+mod test;

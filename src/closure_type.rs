@@ -1,4 +1,4 @@
-use core::marker::{Destruct, PhantomData};
+use core::marker::Destruct;
 
 /// Struct representing a closure with owned data.
 ///
@@ -13,45 +13,37 @@ use core::marker::{Destruct, PhantomData};
 ///
 /// assert!(7 == cl(2));
 /// ```
-pub struct ConstFnOnceClosure<CapturedData, ClosureArguments, Function> {
+pub struct ConstFnOnceClosure<CapturedData, Function> {
   data: CapturedData,
   func: Function,
-  _ph: PhantomData<ClosureArguments>,
 }
-impl<CapturedData, ClosureArguments, Function>
-  ConstFnOnceClosure<CapturedData, ClosureArguments, Function>
-{
+impl<CapturedData, Function> ConstFnOnceClosure<CapturedData, Function> {
   /// Function for creating a new closure.
   ///
   /// `data` is the owned data that is captured from the environment (this data must be `~const Destruct`).
   ///
   /// `func` is the function of the closure, it gets the data and a tuple of the arguments closure
   ///   and return the return value of the closure.
-  pub const fn new<ClosureReturnValue>(data: CapturedData, func: Function) -> Self
+  pub const fn new<ClosureArguments, ClosureReturnValue>(data: CapturedData, func: Function) -> Self
   where
     CapturedData: ~const Destruct,
     Function: ~const Fn(CapturedData, ClosureArguments) -> ClosureReturnValue + ~const Destruct,
   {
-    Self {
-      data,
-      func,
-      _ph: PhantomData,
-    }
+    Self { data, func }
   }
 }
-impl<CapturedData, ClosureArguments, Function, ClosureReturnValue> const FnOnce<ClosureArguments>
-  for ConstFnOnceClosure<CapturedData, ClosureArguments, Function>
+impl<CapturedData, ClosureArguments, Function> const FnOnce<ClosureArguments>
+  for ConstFnOnceClosure<CapturedData, Function>
 where
   CapturedData: ~const Destruct,
-  Function: ~const Fn(CapturedData, ClosureArguments) -> ClosureReturnValue + ~const Destruct,
+  Function: ~const Fn<(CapturedData, ClosureArguments)> + ~const Destruct,
 {
-  type Output = ClosureReturnValue;
+  type Output = Function::Output;
 
   extern "rust-call" fn call_once(self, args: ClosureArguments) -> Self::Output {
     (self.func)(self.data, args)
   }
 }
-
 /// Struct representing a closure with mutably borrowed data.
 ///
 /// Example:
@@ -68,34 +60,29 @@ where
 /// assert!(7 == cl(2));
 /// assert!(8 == cl(1));
 /// ```
-pub struct ConstFnMutClosure<'a, CapturedData: ?Sized, ClosureArguments, Function> {
+pub struct ConstFnMutClosure<'a, CapturedData: ?Sized, Function> {
   data: &'a mut CapturedData,
   func: Function,
-  _ph: PhantomData<ClosureArguments>,
 }
-impl<'a, CapturedData: ?Sized, ClosureArguments, Function>
-  ConstFnMutClosure<'a, CapturedData, ClosureArguments, Function>
-{
+impl<'a, CapturedData: ?Sized, Function> ConstFnMutClosure<'a, CapturedData, Function> {
   /// Function for creating a new closure.
   ///
   /// `data` is the a mutable borrow of data that is captured from the environment.
   ///
   /// `func` is the function of the closure, it gets the data and a tuple of the arguments closure
   ///   and return the return value of the closure.
-  pub const fn new<ClosureReturnValue>(data: &'a mut CapturedData, func: Function) -> Self
+  pub const fn new<ClosureArguments, ClosureReturnValue>(
+    data: &'a mut CapturedData,
+    func: Function,
+  ) -> Self
   where
-    Function:
-      ~const Fn(&mut CapturedData, ClosureArguments) -> ClosureReturnValue + ~const Destruct,
+    Function: ~const Fn(&mut CapturedData, ClosureArguments) -> ClosureReturnValue,
   {
-    Self {
-      data,
-      func,
-      _ph: PhantomData,
-    }
+    Self { data, func }
   }
 }
 impl<'a, CapturedData: ?Sized, ClosureArguments, Function, ClosureReturnValue> const
-  FnOnce<ClosureArguments> for ConstFnMutClosure<'a, CapturedData, ClosureArguments, Function>
+  FnOnce<ClosureArguments> for ConstFnMutClosure<'a, CapturedData, Function>
 where
   Function: ~const Fn(&mut CapturedData, ClosureArguments) -> ClosureReturnValue + ~const Destruct,
 {
@@ -106,9 +93,9 @@ where
   }
 }
 impl<'a, CapturedData: ?Sized, ClosureArguments, Function, ClosureReturnValue> const
-  FnMut<ClosureArguments> for ConstFnMutClosure<'a, CapturedData, ClosureArguments, Function>
+  FnMut<ClosureArguments> for ConstFnMutClosure<'a, CapturedData, Function>
 where
-  Function: ~const Fn(&mut CapturedData, ClosureArguments) -> ClosureReturnValue + ~const Destruct,
+  Function: ~const Fn(&mut CapturedData, ClosureArguments) -> ClosureReturnValue,
 {
   extern "rust-call" fn call_mut(&mut self, args: ClosureArguments) -> Self::Output {
     (self.func)(self.data, args)
@@ -130,33 +117,29 @@ where
 /// assert!(7 == cl(2));
 /// assert!(6 == cl(1));
 /// ```
-pub struct ConstFnClosure<'a, CapturedData: ?Sized, ClosureArguments, Function> {
+pub struct ConstFnClosure<'a, CapturedData: ?Sized, Function> {
   data: &'a CapturedData,
   func: Function,
-  _ph: PhantomData<ClosureArguments>,
 }
-impl<'a, CapturedData: ?Sized, ClosureArguments, Function>
-  ConstFnClosure<'a, CapturedData, ClosureArguments, Function>
-{
+impl<'a, CapturedData: ?Sized, Function> ConstFnClosure<'a, CapturedData, Function> {
   /// Function for creating a new closure.
   ///
   /// `data` is the a mutable borrow of data that is captured from the environment.
   ///
   /// `func` is the function of the closure, it gets the data and a tuple of the arguments closure
   ///   and return the return value of the closure.
-  pub const fn new<ClosureReturnValue>(data: &'a CapturedData, func: Function) -> Self
+  pub const fn new<ClosureArguments, ClosureReturnValue>(
+    data: &'a CapturedData,
+    func: Function,
+  ) -> Self
   where
-    Function: ~const Fn(&CapturedData, ClosureArguments) -> ClosureReturnValue + ~const Destruct,
+    Function: ~const Fn(&CapturedData, ClosureArguments) -> ClosureReturnValue,
   {
-    Self {
-      data,
-      func,
-      _ph: PhantomData,
-    }
+    Self { data, func }
   }
 }
 impl<'a, CapturedData: ?Sized, Function, ClosureArguments, ClosureReturnValue> const
-  FnOnce<ClosureArguments> for ConstFnClosure<'a, CapturedData, ClosureArguments, Function>
+  FnOnce<ClosureArguments> for ConstFnClosure<'a, CapturedData, Function>
 where
   Function: ~const Fn(&CapturedData, ClosureArguments) -> ClosureReturnValue + ~const Destruct,
 {
@@ -167,9 +150,9 @@ where
   }
 }
 impl<'a, CapturedData: ?Sized, Function, ClosureArguments, ClosureReturnValue> const
-  FnMut<ClosureArguments> for ConstFnClosure<'a, CapturedData, ClosureArguments, Function>
+  FnMut<ClosureArguments> for ConstFnClosure<'a, CapturedData, Function>
 where
-  Function: ~const Fn(&CapturedData, ClosureArguments) -> ClosureReturnValue + ~const Destruct,
+  Function: ~const Fn(&CapturedData, ClosureArguments) -> ClosureReturnValue,
 {
   extern "rust-call" fn call_mut(&mut self, args: ClosureArguments) -> Self::Output {
     self.call(args)
@@ -178,10 +161,10 @@ where
 impl<
     'a,
     CapturedData: ?Sized,
-    Function: ~const Fn(&CapturedData, ClosureArguments) -> ClosureReturnValue + ~const Destruct,
+    Function: ~const Fn(&CapturedData, ClosureArguments) -> ClosureReturnValue,
     ClosureArguments,
     ClosureReturnValue,
-  > const Fn<ClosureArguments> for ConstFnClosure<'a, CapturedData, ClosureArguments, Function>
+  > const Fn<ClosureArguments> for ConstFnClosure<'a, CapturedData, Function>
 {
   extern "rust-call" fn call(&self, args: ClosureArguments) -> Self::Output {
     (self.func)(self.data, args)
