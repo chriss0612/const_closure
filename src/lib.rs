@@ -1,5 +1,6 @@
 #![no_std]
 #![warn(clippy::pedantic, clippy::nursery)]
+#![allow(clippy::items_after_statements)]
 #![deny(rust_2018_idioms)]
 #![deny(elided_lifetimes_in_paths)]
 #![deny(missing_docs)]
@@ -47,4 +48,5 @@ mod closure_type;
 pub use closure_type::{ConstFnClosure, ConstFnMutClosure, ConstFnOnceClosure};
 
 #[cfg(test)]
+#[allow(clippy::trivially_copy_pass_by_ref)]
 mod test;

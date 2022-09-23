@@ -25,7 +25,7 @@ fn test1() {
   }
   let cl = ConstFnMutClosure::new(&mut f, imp); //|f, (a, b): (&i32, &i32)| None);
 
-  consume(cl)
+  consume(cl);
 }
 
 #[test]

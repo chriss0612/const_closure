@@ -1,6 +1,7 @@
 # Const Closure
 
-[![Rust-CI](https://github.com/chriss0612/const_closure/actions/workflows/rust.yml/badge.svg)](https://github.com/chriss0612/const_closure/actions/workflows/rust.yml)
+[![Daily-Nightly](https://github.com/chriss0612/const_closure/actions/workflows/rust_daily_nightly_check.yml/badge.svg)](https://github.com/chriss0612/const_closure/actions/workflows/rust_daily_nightly_check.yml)
+[![Rust-Main-CI](https://github.com/chriss0612/const_closure/actions/workflows/rust_main.yml/badge.svg)](https://github.com/chriss0612/const_closure/actions/workflows/rust_main.yml)
 [![docs.rs](https://docs.rs/const_closure/badge.svg)](https://docs.rs/const_closure)
 [![crates.io](https://img.shields.io/crates/v/const_closure.svg)](https://crates.io/crates/const_closure)
 [![rustc](https://img.shields.io/badge/rustc-nightly-lightgrey)](https://doc.rust-lang.org/nightly/std/)
