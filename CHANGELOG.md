@@ -6,6 +6,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.2.2] - 2022-09-25
+
+- Moved to [feather-ink-org](https://github.com/ink-feather-org/const_closure)
+
 ### Fixes
 
 - Fixed clippy lints.
