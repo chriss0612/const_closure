@@ -33,7 +33,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 Initial release.
 
-[Unreleased]: https://github.com/chriss0612/const_closure/compare/v0.2.1...HEAD
-[0.2.1]: https://github.com/chriss0612/const_closure/compare/v0.2.0...v0.2.1
-[0.2.0]: https://github.com/chriss0612/const_closure/compare/v0.1.0...v0.2.0
-[0.1.0]: https://github.com/chriss0612/const_closure/releases/tag/v0.1.0
+[Unreleased]: https://github.com/ink-feather-org/const_closure/compare/v0.2.1...HEAD
+[0.2.1]: https://github.com/ink-feather-org/const_closure/compare/v0.2.0...v0.2.1
+[0.2.0]: https://github.com/ink-feather-org/const_closure/compare/v0.1.0...v0.2.0
+[0.1.0]: https://github.com/ink-feather-org/const_closure/releases/tag/v0.1.0
