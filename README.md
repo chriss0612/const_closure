@@ -1,7 +1,7 @@
 # Const Closure
 
-[![Daily-Nightly](https://github.com/chriss0612/const_closure/actions/workflows/rust_daily_nightly_check.yml/badge.svg)](https://github.com/chriss0612/const_closure/actions/workflows/rust_daily_nightly_check.yml)
-[![Rust-Main-CI](https://github.com/chriss0612/const_closure/actions/workflows/rust_main.yml/badge.svg)](https://github.com/chriss0612/const_closure/actions/workflows/rust_main.yml)
+[![Daily-Nightly](https://https://github.com/ink-feather-org/const_closure/actions/workflows/rust_daily_nightly_check.yml/badge.svg)](https://github.com/ink-feather-org/const_closure/actions/workflows/rust_daily_nightly_check.yml)
+[![Rust-Main-CI](https://github.com/ink-feather-org/const_closure/actions/workflows/rust_main.yml/badge.svg)](https://github.com/ink-feather-org/const_closure/actions/workflows/rust_main.yml)
 [![docs.rs](https://docs.rs/const_closure/badge.svg)](https://docs.rs/const_closure)
 [![crates.io](https://img.shields.io/crates/v/const_closure.svg)](https://crates.io/crates/const_closure)
 [![rustc](https://img.shields.io/badge/rustc-nightly-lightgrey)](https://doc.rust-lang.org/nightly/std/)
@@ -49,8 +49,8 @@ License
 
 This project is released under either:
 
-- [MIT License](https://github.com/chriss0612/const_closure/blob/master/LICENSE-MIT)
-- [Apache License (Version 2.0)](https://github.com/chriss0612/const_closure/blob/master/LICENSE-APACHE)
+- [MIT License](https://github.com/ink-feather-org/const_closure/blob/master/LICENSE-MIT)
+- [Apache License (Version 2.0)](https://github.com/ink-feather-org/const_closure/blob/master/LICENSE-APACHE)
 
 at your choosing.
 
