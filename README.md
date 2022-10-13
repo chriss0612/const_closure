@@ -1,6 +1,6 @@
 # Const Closure
 
-[![Daily-Nightly](https://https://github.com/ink-feather-org/const_closure/actions/workflows/rust_daily_nightly_check.yml/badge.svg)](https://github.com/ink-feather-org/const_closure/actions/workflows/rust_daily_nightly_check.yml)
+[![Daily-Nightly](https://github.com/ink-feather-org/const_closure/actions/workflows/rust_daily_nightly_check.yml/badge.svg)](https://github.com/ink-feather-org/const_closure/actions/workflows/rust_daily_nightly_check.yml)
 [![Rust-Main-CI](https://github.com/ink-feather-org/const_closure/actions/workflows/rust_main.yml/badge.svg)](https://github.com/ink-feather-org/const_closure/actions/workflows/rust_main.yml)
 [![docs.rs](https://docs.rs/const_closure/badge.svg)](https://docs.rs/const_closure)
 [![crates.io](https://img.shields.io/crates/v/const_closure.svg)](https://crates.io/crates/const_closure)
