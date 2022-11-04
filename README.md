@@ -8,21 +8,18 @@
 
 <!-- The rest of this section comes straight from the crate docs from the source. -->
 
-This crate allows you to create types for representing closures in const contexts.
+This crate allows you to create types which represent closures in const contexts.
 
-To do this simply create an instance of one of the `Const{Fn, FnMut, FnOnce}Closure`
-with the associated `new` function.
+To do this simply create an instance of one of the provided closure helpers: `Const{Fn, FnMut, FnOnce}Closure`
+with their associated `new` function.
 
-This new function gets a the data to be captured (owned for `FnOnce`, `&mut` for `FnMut` and `&` for `Fn`)
-and the the function to execute.
+A closure helper instance gets the data to capture (owned for `FnOnce`, `&mut` for `FnMut` and `&` for `Fn`)
+and the closure function to execute.
 
-This function must be a `const fn` that gets the captured state (owned for `FnOnce`, `&mut` for `FnMut` and `&` for `Fn`)
+The closure function must be a `const fn` that gets the captured state (owned for `FnOnce`, `&mut` for `FnMut` and `&` for `Fn`)
 and a tuple representing the arguments of the closure.
 
-The closure returns the return value of that function.
-
-If you were looking for the `const_closure` macro, this was removed in favour of the new generic based approach
-  as this is a lot cleaner and also more versatile.
+A closure helper instance returns the return value of the closure function.
 
 ## Example
 ```rust
@@ -38,6 +35,8 @@ let mut cl = ConstFnMutClosure::new(&mut i, imp);
 assert!(7 == cl(2));
 assert!(8 == cl(1));
 ```
+
+Note: The `const_closure` macro has been removed in favour of the new generic based approach.
 
 Authors
 -------
