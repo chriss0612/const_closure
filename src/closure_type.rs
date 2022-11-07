@@ -1,4 +1,4 @@
-use core::marker::Destruct;
+use core::marker::{Destruct, Tuple};
 
 /// Struct representing a closure with owned data.
 ///
@@ -36,6 +36,7 @@ impl<CapturedData, ClosureArguments, Function> const FnOnce<ClosureArguments>
   for ConstFnOnceClosure<CapturedData, Function>
 where
   CapturedData: ~const Destruct,
+  ClosureArguments: Tuple,
   Function: ~const Fn<(CapturedData, ClosureArguments)> + ~const Destruct,
 {
   type Output = Function::Output;
@@ -81,7 +82,7 @@ impl<'a, CapturedData: ?Sized, Function> ConstFnMutClosure<'a, CapturedData, Fun
     Self { data, func }
   }
 }
-impl<'a, CapturedData: ?Sized, ClosureArguments, Function, ClosureReturnValue> const
+impl<'a, CapturedData: ?Sized, ClosureArguments: Tuple, Function, ClosureReturnValue> const
   FnOnce<ClosureArguments> for ConstFnMutClosure<'a, CapturedData, Function>
 where
   Function: ~const Fn(&mut CapturedData, ClosureArguments) -> ClosureReturnValue + ~const Destruct,
@@ -92,7 +93,7 @@ where
     self.call_mut(args)
   }
 }
-impl<'a, CapturedData: ?Sized, ClosureArguments, Function, ClosureReturnValue> const
+impl<'a, CapturedData: ?Sized, ClosureArguments: Tuple, Function, ClosureReturnValue> const
   FnMut<ClosureArguments> for ConstFnMutClosure<'a, CapturedData, Function>
 where
   Function: ~const Fn(&mut CapturedData, ClosureArguments) -> ClosureReturnValue,
@@ -138,7 +139,7 @@ impl<'a, CapturedData: ?Sized, Function> ConstFnClosure<'a, CapturedData, Functi
     Self { data, func }
   }
 }
-impl<'a, CapturedData: ?Sized, Function, ClosureArguments, ClosureReturnValue> const
+impl<'a, CapturedData: ?Sized, Function, ClosureArguments: Tuple, ClosureReturnValue> const
   FnOnce<ClosureArguments> for ConstFnClosure<'a, CapturedData, Function>
 where
   Function: ~const Fn(&CapturedData, ClosureArguments) -> ClosureReturnValue + ~const Destruct,
@@ -149,7 +150,7 @@ where
     self.call_mut(args)
   }
 }
-impl<'a, CapturedData: ?Sized, Function, ClosureArguments, ClosureReturnValue> const
+impl<'a, CapturedData: ?Sized, Function, ClosureArguments: Tuple, ClosureReturnValue> const
   FnMut<ClosureArguments> for ConstFnClosure<'a, CapturedData, Function>
 where
   Function: ~const Fn(&CapturedData, ClosureArguments) -> ClosureReturnValue,
@@ -162,7 +163,7 @@ impl<
     'a,
     CapturedData: ?Sized,
     Function: ~const Fn(&CapturedData, ClosureArguments) -> ClosureReturnValue,
-    ClosureArguments,
+    ClosureArguments: Tuple,
     ClosureReturnValue,
   > const Fn<ClosureArguments> for ConstFnClosure<'a, CapturedData, Function>
 {

@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixes
 - Fixed daily nightly ci badge.
+- Added the new `Tuple` marker trait to trait bounds where necessary.
 
 ## [0.2.2] - 2022-09-25
 

@@ -10,6 +10,7 @@
 #![feature(const_trait_impl)]
 #![feature(const_mut_refs)]
 #![feature(const_refs_to_cell)]
+#![feature(tuple_trait)]
 /*!
 
 This crate allows you to create types which represent closures in const contexts.

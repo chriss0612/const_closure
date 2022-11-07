@@ -1,4 +1,7 @@
-use core::{cmp::Ordering, marker::Destruct};
+use core::{
+  cmp::Ordering,
+  marker::{Destruct, Tuple},
+};
 
 use crate::ConstFnMutClosure;
 
@@ -32,7 +35,7 @@ fn test1() {
 const fn test2() {
   struct Func<T>(T);
 
-  impl<A, T: ~const FnOnce<A> + ~const Destruct> const FnOnce<A> for Func<T> {
+  impl<A: Tuple, T: ~const FnOnce<A> + ~const Destruct> const FnOnce<A> for Func<T> {
     type Output = T::Output;
 
     extern "rust-call" fn call_once(self, args: A) -> Self::Output {
