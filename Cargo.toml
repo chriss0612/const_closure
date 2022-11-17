@@ -7,7 +7,7 @@ authors = [
     "onestacked <chrisi.schrefl@gmail.com>",
     "raldone01 <raldone01@gmail.com>",
 ]
-description = "Macro to create const callable closures"
+description = "Helpers for creating const callable closures."
 homepage = "https://github.com/ink-feather-org/const_closure"
 repository = "https://github.com/ink-feather-org/const_closure"
 categories = ["no-std"]
