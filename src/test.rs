@@ -3,7 +3,7 @@ use core::{
   marker::{Destruct, Tuple},
 };
 
-use crate::ConstFnMutClosure;
+use crate::ConstClosure;
 
 #[test]
 fn test1() {
@@ -18,7 +18,7 @@ fn test1() {
   }
 
   const fn imp<T: ~const Destruct, F, K: ~const PartialOrd + ~const Destruct>(
-    f: &mut F,
+    (f,): (&mut F,),
     (a, b): (&T, &T),
   ) -> Option<Ordering>
   where
@@ -26,7 +26,7 @@ fn test1() {
   {
     f(a).partial_cmp(&f(b))
   }
-  let cl = ConstFnMutClosure::new(&mut f, imp); //|f, (a, b): (&i32, &i32)| None);
+  let cl = ConstClosure::new((&mut f,), imp);
 
   consume(cl);
 }
@@ -59,7 +59,7 @@ const fn test2() {
 #[test]
 const fn test3() {
   const fn imp<T, F, K: ~const PartialOrd + ~const Destruct>(
-    f: &mut F,
+    (f,): (&mut F,),
     (a, b): (&T, &T),
   ) -> Option<core::cmp::Ordering>
   where
@@ -71,7 +71,7 @@ const fn test3() {
     3
   }
   let mut tr = trans::<i32>;
-  let mut cl = ConstFnMutClosure::new(&mut tr, imp);
+  let mut cl = ConstClosure::new((&mut tr,), imp);
 
   const fn consume<T, F>(_: F)
   where
@@ -89,7 +89,7 @@ const fn test3() {
   const_is_sorted_by(&mut cl);
 
   const fn imp2<T, F, K: ~const PartialOrd + ~const Destruct>(
-    f: &mut F,
+    (f,): (&mut F,),
     (a, b): (&T, &T),
   ) -> Option<core::cmp::Ordering>
   where
@@ -101,5 +101,5 @@ const fn test3() {
     5
   }
   let mut f = testx::<i32>;
-  const_is_sorted_by(ConstFnMutClosure::new(&mut f, imp2));
+  const_is_sorted_by(ConstClosure::new((&mut f,), imp2));
 }

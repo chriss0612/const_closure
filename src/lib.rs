@@ -29,13 +29,13 @@ A closure helper instance returns the return value of the closure function.
 ## Example
 ```rust
 #![feature(const_mut_refs)]
-use const_closure::ConstFnMutClosure;
-const fn imp(state: &mut i32, (arg,): (i32,)) -> i32 {
+use const_closure::ConstClosure;
+const fn imp((state,): (&mut i32,), (arg,): (i32,)) -> i32 {
   *state += arg;
   *state
 }
 let mut i = 5;
-let mut cl = ConstFnMutClosure::new(&mut i, imp);
+let mut cl = ConstClosure::new((&mut i,), imp);
 
 assert!(7 == cl(2));
 assert!(8 == cl(1));
@@ -67,7 +67,7 @@ conditions.
 */
 
 mod closure_type;
-pub use closure_type::{ConstFnClosure, ConstFnMutClosure, ConstFnOnceClosure};
+pub use closure_type::ConstClosure;
 
 #[cfg(test)]
 #[allow(clippy::trivially_copy_pass_by_ref)]
