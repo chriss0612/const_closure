@@ -6,6 +6,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.3.0]
+- Reworked the crate to use only a single Struct `ConstClosure`.
+- Allow borrowing tuples of up to 12 references (Currently only of the same mutability).
+- Updated the docs for the new version.
+- Breaking: Removed the old Types (`ConstFnClosure`, `ConstFnMutClosure`, `ConstFnOnceClosure`).
+- Breaking: Require the Captured Data and Arguments of the implementation function to be Tuples for consistency.
+
 ## [0.2.3] - 2022-11-10
 
 - Minor doc improvements.

@@ -103,3 +103,79 @@ const fn test3() {
   let mut f = testx::<i32>;
   const_is_sorted_by(ConstClosure::new((&mut f,), imp2));
 }
+
+#[test]
+fn test_multiple() {
+  const fn consumer<F: ~const FnOnce() -> i32>(f: F) -> i32 {
+    f()
+  }
+  const fn user(x: i32, y: i32) -> i32 {
+    const fn imp((x, y): (i32, i32), _: ()) -> i32 {
+      x + y
+    }
+    consumer(ConstClosure::new((x, y), imp))
+  }
+
+  const _: () = {
+    let x = 1;
+    let y = 4;
+    assert!(user(x, y) == 5);
+  };
+  let x = 1;
+  let y = 7;
+
+  assert_eq!(user(x, y), 8);
+}
+
+#[test]
+fn test_multiple_mut() {
+  const fn consumer<F: ~const FnMut(i32) + ~const Destruct>(mut f: F) {
+    f(5);
+  }
+  const fn user(x: &mut i32, y: &mut i32) {
+    const fn imp((x, y): (&mut i32, &mut i32), (val,): (i32,)) {
+      *x += val;
+      *y += val;
+    }
+    consumer(ConstClosure::new((x, y), imp));
+  }
+
+  const _: () = {
+    let mut x = 0;
+    let mut y = 4;
+    user(&mut x, &mut y);
+
+    assert!(x == 5);
+    assert!(y == 9);
+  };
+  let mut x = 1;
+  let mut y = 7;
+
+  user(&mut x, &mut y);
+
+  assert_eq!(x, 6);
+  assert_eq!(y, 12);
+}
+
+#[test]
+fn test_multiple_ref() {
+  const fn consumer<F: ~const Fn() -> i32 + ~const Destruct>(f: F) -> i32 {
+    f()
+  }
+  const fn user(x: &i32, y: &i32) -> i32 {
+    const fn imp((x, y): (&i32, &i32), _: ()) -> i32 {
+      *x + *y
+    }
+    consumer(ConstClosure::new((x, y), imp))
+  }
+
+  const _: () = {
+    let x = 1;
+    let y = 4;
+    assert!(user(&x, &y) == 5);
+  };
+  let x = 1;
+  let y = 7;
+
+  assert_eq!(user(&x, &y), 8);
+}
