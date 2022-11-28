@@ -6,7 +6,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-## [0.3.0]
+## [0.3.0] - 2022-11-22
 - Reworked the crate to use only a single Struct `ConstClosure`.
 - Allow borrowing tuples of up to 12 references (Currently only of the same mutability).
 - Updated the docs for the new version.
@@ -47,7 +47,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 Initial release.
 
-[Unreleased]: https://github.com/ink-feather-org/const_closure/compare/v0.2.3...HEAD
+[Unreleased]: https://github.com/ink-feather-org/const_closure/compare/v0.3.0...HEAD
+[0.3.0]: https://github.com/ink-feather-org/const_closure/compare/v0.2.3...v0.3.0
 [0.2.3]: https://github.com/ink-feather-org/const_closure/compare/v0.2.2...v0.2.3
 [0.2.2]: https://github.com/ink-feather-org/const_closure/compare/v0.2.1...v0.2.2
 [0.2.1]: https://github.com/ink-feather-org/const_closure/compare/v0.2.0...v0.2.1

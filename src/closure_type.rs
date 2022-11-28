@@ -30,14 +30,22 @@ impl<CapturedData: Tuple, Function> ConstClosure<CapturedData, Function> {
 }
 
 macro_rules! impl_const_closure {
-  ($T:ident) => {
-    impl_const_closure!(@impl $T);
-};
-  ($T:ident $($U:ident)+) => {
-    impl_const_closure!($($U)+);
-    impl_const_closure!(@impl $T $( $U )+);
+  ($A:ident) => {
+    impl_const_closure!(@impl [
+      #[doc = "This trait is implemented for tuples up to twelve items long."]] $A);
   };
-  (@impl $($var:ident)+) => {
+  ($A:ident $B:ident) => {
+    impl_const_closure!($B);
+    impl_const_closure!(@impl [
+      #[doc = "This trait is implemented for tuples up to twelve items long."]] $A $B);
+  };
+  ($T:ident $B:ident $($U:ident)+) => {
+    impl_const_closure!($B $($U)+);
+    impl_const_closure!(@impl
+      [#[doc(hidden)]] $T $B $( $U )+);
+  };
+  (@impl $([#[$meta:meta]])? $($var:ident)+) => {
+    $(#[$meta])?
     impl<$($var,)+ ClosureArguments: Tuple, Function, ClosureReturnValue> const
       FnOnce<ClosureArguments> for ConstClosure<($($var,)+), Function>
     where
@@ -51,6 +59,7 @@ macro_rules! impl_const_closure {
         (self.func)(self.data, args)
       }
     }
+    $(#[$meta])?
     impl<'a, $($var,)+ ClosureArguments: Tuple, Function, ClosureReturnValue> const
       FnMut<ClosureArguments> for ConstClosure<($(&'a mut $var,)+), Function>
     where
@@ -63,6 +72,7 @@ macro_rules! impl_const_closure {
         (self.func)(($($var,)*), args)
       }
     }
+    $(#[$meta])?
     impl<'a, $($var,)+ ClosureArguments: Tuple, Function, ClosureReturnValue> const
     FnMut<ClosureArguments> for ConstClosure<($(&'a $var,)+), Function>
     where
@@ -73,6 +83,7 @@ macro_rules! impl_const_closure {
         (self.func)(self.data, args)
       }
     }
+    $(#[$meta])?
     impl<'a, $($var,)+ ClosureArguments: Tuple, Function, ClosureReturnValue> const
       Fn<ClosureArguments> for ConstClosure<($(&'a $var,)+), Function>
     where
