@@ -6,6 +6,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.3.1] - 2024-12-12
+- Add a public archive note and state the last supported rust version `1.71.0-nightly (nightly-2023-04-18)`.
+- Removed the CI.
+
 ## [0.3.0] - 2022-11-22
 - Reworked the crate to use only a single Struct `ConstClosure`.
 - Allow borrowing tuples of up to 12 references (Currently only of the same mutability).
@@ -47,7 +51,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 Initial release.
 
-[Unreleased]: https://github.com/ink-feather-org/const_closure/compare/v0.3.0...HEAD
+[Unreleased]: https://github.com/ink-feather-org/const_closure/compare/v0.3.1...HEAD
+[0.3.1]: https://github.com/ink-feather-org/const_closure/compare/v0.3.0...v0.3.1
 [0.3.0]: https://github.com/ink-feather-org/const_closure/compare/v0.2.3...v0.3.0
 [0.2.3]: https://github.com/ink-feather-org/const_closure/compare/v0.2.2...v0.2.3
 [0.2.2]: https://github.com/ink-feather-org/const_closure/compare/v0.2.1...v0.2.2

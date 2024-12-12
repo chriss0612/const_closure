@@ -1,12 +1,18 @@
 # Const Closure
 
-[![Daily-Nightly](https://github.com/ink-feather-org/const_closure/actions/workflows/rust_daily_nightly_check.yml/badge.svg)](https://github.com/ink-feather-org/const_closure/actions/workflows/rust_daily_nightly_check.yml)
-[![Rust-Main-CI](https://github.com/ink-feather-org/const_closure/actions/workflows/rust_main.yml/badge.svg)](https://github.com/ink-feather-org/const_closure/actions/workflows/rust_main.yml)
 [![docs.rs](https://docs.rs/const_closure/badge.svg)](https://docs.rs/const_closure)
 [![crates.io](https://img.shields.io/crates/v/const_closure.svg)](https://crates.io/crates/const_closure)
 [![rustc](https://img.shields.io/badge/rustc-nightly-lightgrey)](https://doc.rust-lang.org/nightly/std/)
 
 <!-- The rest of this section comes straight from the crate docs from the source. -->
+
+# THIS CRATE IS BROKEN - Archive Note
+
+The last tested working rust version is `1.71.0-nightly (nightly-2023-04-18)`.
+Most const traits have been removed from the standard library.
+Once they are back this crate might make a return if it is still needed.
+
+## Description
 
 This crate allows you to create types which represent closures in const contexts.
 

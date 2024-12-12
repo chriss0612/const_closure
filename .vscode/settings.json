@@ -1,6 +1,6 @@
 {
-    "cSpell.diagnosticLevel": "Information",
-    "cSpell.words": [
-        "clippy"
-    ]
+  "rust-analyzer.cargo.extraArgs": [
+    "-Z",
+    "unstable-options"
+  ]
 }
