@@ -80,8 +80,8 @@ License
 
 This project is released under either:
 
-- [MIT License](https://github.com/ink-feather-org/const_closure/blob/master/LICENSE-MIT)
-- [Apache License (Version 2.0)](https://github.com/ink-feather-org/const_closure/blob/master/LICENSE-APACHE)
+- [MIT License](https://github.com/ink-feather-org/const_closure_rs/blob/master/LICENSE-MIT)
+- [Apache License (Version 2.0)](https://github.com/ink-feather-org/const_closure_rs/blob/master/LICENSE-APACHE)
 
 at your choosing.
 
