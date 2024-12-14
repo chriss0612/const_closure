@@ -1,10 +1,8 @@
-# Const Closure
+# const-closure
 
-[![docs.rs](https://docs.rs/const_closure/badge.svg)](https://docs.rs/const_closure)
-[![crates.io](https://img.shields.io/crates/v/const_closure.svg)](https://crates.io/crates/const_closure)
+[![docs.rs](https://docs.rs/const-closure/badge.svg)](https://docs.rs/const-closure)
+[![crates.io](https://img.shields.io/crates/v/const-closure.svg)](https://crates.io/crates/const-closure)
 [![rustc](https://img.shields.io/badge/rustc-nightly-lightgrey)](https://doc.rust-lang.org/nightly/std/)
-
-<!-- The rest of this section comes straight from the crate docs from the source. -->
 
 # THIS CRATE IS BROKEN - Archive Note
 
@@ -80,8 +78,8 @@ License
 
 This project is released under either:
 
-- [MIT License](https://github.com/ink-feather-org/const_closure_rs/blob/master/LICENSE-MIT)
-- [Apache License (Version 2.0)](https://github.com/ink-feather-org/const_closure_rs/blob/master/LICENSE-APACHE)
+- [MIT License](https://github.com/ink-feather-org/const-closure-rs/blob/master/LICENSE-MIT)
+- [Apache License (Version 2.0)](https://github.com/ink-feather-org/const-closure-rs/blob/master/LICENSE-APACHE)
 
 at your choosing.
 

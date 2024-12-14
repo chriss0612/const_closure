@@ -1,5 +1,5 @@
 [package]
-name = "const_closure"
+name = "const-closure"
 version = "0.3.1"
 edition = "2021"
 license = "MIT OR Apache-2.0"
@@ -8,7 +8,7 @@ authors = [
     "raldone01 <raldone01@gmail.com>",
 ]
 description = "Helpers for creating const callable closures."
-homepage = "https://github.com/ink-feather-org/const_closure_rs"
-repository = "https://github.com/ink-feather-org/const_closure_rs"
+homepage = "https://github.com/ink-feather-org/const-closure-rs"
+repository = "https://github.com/ink-feather-org/const-closure-rs"
 categories = ["no-std"]
 keywords = ["const", "closures", "nightly"]
